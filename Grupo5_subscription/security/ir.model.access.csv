@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_subscription_agent,subscription.subscription,model_subscription_subscription,Grupo5_subscription.group_subscription_user,1,0,0,1
+access_subscription_agent_tag,subscription.tag,model_subscription_tag,Grupo5_subscription.group_subscription_user,1,0,0,1
+access_subscription_manager,subscription.subscription,model_subscription_subscription,Grupo5_subscription.group_subscription_manager,1,1,1,1
+access_subscription_manager_tag,subscription.tag,model_subscription_tag,Grupo5_subscription.group_subscription_manager,1,1,1,1
+

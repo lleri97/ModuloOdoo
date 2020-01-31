@@ -1,0 +1,103 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="subscription_view_tree">
+      <field name="name">subscription_view_tree</field>
+      <field name="model">subscription.subscription</field>
+      <field name="arch" type="xml">
+         <tree>
+          <field name="currency_id" invisible="1"/>
+          <field name="name"/>
+          <field name="customer_id"/>
+          <field name="product_id"/>
+          <field name="price" widget="monetary"/>
+          <field name="date_start"/>
+          <field name="date_end"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="subscription_view_form">
+      <field name="name">subscription_view_form</field>
+      <field name="model">subscription.subscription</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+                <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                    <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                </button>
+            </div>
+            <div class="oe_title">
+              <label for="name" string="Contract Name" class="oe_edit_only"/>
+              <h1>
+                  <field name="name"/>
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="currency_id" invisible="1"/>
+                <field name="customer_id" domain="[('customer', '=', True)]"/>
+                <field name="agent_id"/>
+                <field name="invoicing_frequency"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+              </group>
+              <group>
+                <field name="date_start" required="1"/>
+                <field name="date_end"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="product_id" domain="[('sale_ok', '=', True)]"/>
+                <field name="price" widget="monetary"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="subscription_view_filter">
+      <field name="name">subscription_view_tree</field>
+      <field name="model">subscription.subscription</field>
+      <field name="arch" type="xml">
+         <search>
+           <field name="name" string="Contract Name"/>
+           <field name="customer_id" string="Customer"/>
+           <field name="agent_id" string="Salesperson"/>
+           <field name="product_id" string="Product"/>
+           <field name="date_start" string="Start Date"/>
+           <field name="date_end" string="End Date"/>
+           <field name="price" string="Price Greater Than" filter_domain="[('price','&gt;',self)]"/>
+           <field name="price" string="Price Less Than" filter_domain="[('price','&lt;',self)]"/>
+           <filter name="inactive" string="Archived" domain="[('active','=',False)]"/>
+           <separator/>
+           <filter name="expired" string="Expired" domain="[('date_end','&lt;',context_today().strftime('%%Y-%%m-%%d'))]"></filter>
+           <group expand="0" name="group_by" string="Group By">
+               <filter name="salesperson" string="Salesperson" context="{'group_by' : 'agent_id'}"/>
+               <filter name="customer" string="Customer" context="{'group_by': 'customer_id'}"/>
+               <filter name="product" string="Product" context="{'group_by': 'product_id'}"/>
+           </group>
+         </search>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="action_subscription">
+      <field name="name">Subscription</field>
+      <field name="res_model">subscription.subscription</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="Subscription" id="menu_root"/>
+    <menuitem name="Subscriptions" id="menu_subscription" parent="Grupo5_subscription.menu_root" action="Grupo5_subscription.action_subscription"/>
+    <menuitem name="Subscriptions list" id="menu_subscription_list" parent="Grupo5_subscription.menu_subscription" action="Grupo5_subscription.action_subscription"/>
+    <!-- <menuitem action="" id="menu_s" parent="subscription.menu_subscription"  name="Reports"/>-->
+  </data>
+</odoo>
